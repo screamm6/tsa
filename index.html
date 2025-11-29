@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Минки - Онлайн</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Дополнительные CSS анимации */
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            20% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+            40% { transform: translate(-50%, -50%) scale(1); }
+            80% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-app">
+        <!-- Анимированный фон -->
+        <div class="animated-bg">
+            <div class="bg-particle"></div>
+            <div class="bg-particle"></div>
+            <div class="bg-particle"></div>
+            <div class="bg-particle"></div>
+            <div class="bg-particle"></div>
+            <div class="bg-particle"></div>
+            <div class="bg-particle"></div>
+            <div class="bg-particle"></div>
+        </div>
+
+        <!-- Верхняя панель -->
+        <div class="top-panel">
+            <div class="balance-display">
+                <div class="balance-card">
+                    <div class="balance-icon">💰</div>
+                    <div class="balance-info">
+                        <span class="balance-label">ВАШ БАЛАНС</span>
+                        <span class="balance-value" id="userBalance">10 TON</span>
+                    </div>
+                </div>
+                <div class="online-card">
+                    <div class="online-icon">🌐</div>
+                    <div class="online-info">
+                        <span class="online-label">ОНЛАЙН</span>
+                        <span class="online-value" id="onlineCount">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Основной контент -->
+        <div class="main-content">
+            <!-- Экран игры -->
+            <div class="screen game-screen active" id="gameScreen">
+                <div class="game-area">
+                    <div class="game-header">
+                        <div class="game-title">
+                            <h1>🎯 МИНКИ</h1>
+                            <div class="coefficient">x1.45</div>
+                        </div>
+                    </div>
+
+                    <div class="selection-card">
+                        <div class="selection-info">
+                            ВЫБРАНА ЯЧЕЙКА: <span id="selectedCell">-</span>
+                        </div>
+                    </div>
+
+                    <div class="game-grid" id="gameGrid">
+                        <!-- Ячейки 1-9 -->
+                    </div>
+
+                    <!-- Обновленный блок статуса игры -->
+                    <div class="game-status">
+                        <div class="status-item">
+                            <span class="status-label">⏰ До конца ставок:</span>
+                            <span class="status-value" id="roundTimer">ожидание...</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">👥 Игроков в раунде:</span>
+                            <span class="status-value" id="playersInRound">0</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">🎯 Раунд #:</span>
+                            <span class="status-value" id="roundNumber">1</span>
+                        </div>
+                    </div>
+
+                    <div class="online-players">
+                        <h3>👥 Игроки онлайн</h3>
+                        <div class="players-list" id="playersList">
+                            <div class="empty-state">Игроки появятся здесь...</div>
+                        </div>
+                    </div>
+
+                    <div class="bet-section">
+                        <div class="bet-input-card">
+                            <input type="number" id="playerBet" placeholder="СТАВКА TON" min="1" max="10">
+                        </div>
+                        <div class="quick-bets">
+                            <button class="quick-bet btn-glow" data-bet="1">1</button>
+                            <button class="quick-bet btn-glow" data-bet="2">2</button>
+                            <button class="quick-bet btn-glow" data-bet="5">5</button>
+                            <button class="quick-bet btn-glow" data-bet="10">10</button>
+                        </div>
+                        <button class="place-bet-btn btn-pulse" onclick="placeBet()">
+                            <span class="btn-text">🎯 ПОСТАВИТЬ СТАВКУ</span>
+                            <div class="btn-shine"></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Экран профиля -->
+            <div class="screen profile-screen" id="profileScreen">
+                <div class="profile-content">
+                    <div class="profile-header">
+                        <div class="avatar-card">
+                            <div class="avatar">👑</div>
+                            <div class="avatar-glow"></div>
+                        </div>
+                        <h2>Ваш профиль</h2>
+                        <div class="player-id">ID: <span id="playerId">-</span></div>
+                    </div>
+                    
+                    <div class="profile-info">
+                        <div class="info-card">
+                            <div class="info-item">
+                                <span class="info-label">💰 Баланс:</span>
+                                <span class="info-value" id="profileBalance">10 TON</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">🎮 Игр сыграно:</span>
+                                <span class="info-value" id="gamesPlayed">0</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">🏆 Побед:</span>
+                                <span class="info-value" id="winsCount">0</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">💥 Проигрышей:</span>
+                                <span class="info-value" id="lossesCount">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-stats">
+                        <h3>📊 Статистика</h3>
+                        <div class="stats-grid">
+                            <div class="stat-card stat-glow">
+                                <div class="stat-icon">📈</div>
+                                <div class="stat-value" id="winRate">0%</div>
+                                <div class="stat-label">Винрейт</div>
+                            </div>
+                            <div class="stat-card stat-glow">
+                                <div class="stat-icon">💎</div>
+                                <div class="stat-value" id="totalWagered">0</div>
+                                <div class="stat-label">Всего ставок</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="online-stats">
+                        <div class="online-stat-card">
+                            <div class="online-stat">
+                                <span class="online-stat-label">👥 Игроков онлайн:</span>
+                                <span class="online-stat-value" id="globalOnline">0</span>
+                            </div>
+                            <div class="online-stat">
+                                <span class="online-stat-label">🎯 Активных игр:</span>
+                                <span class="online-stat-value" id="activeGames">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Экран настроек -->
+            <div class="screen settings-screen" id="settingsScreen">
+                <div class="settings-content">
+                    <div class="settings-header">
+                        <h2>⚙️ Настройки</h2>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3>🔊 Звуки</h3>
+                        <div class="setting-item">
+                            <span>Звуки игры</span>
+                            <label class="switch">
+                                <input type="checkbox" id="soundEnabled" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <span>Вибрация</span>
+                            <label class="switch">
+                                <input type="checkbox" id="vibrationEnabled" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="settings-actions">
+                        <button class="settings-btn btn-glow" onclick="resetStats()">
+                            🔄 Сбросить статистику
+                        </button>
+                        <button class="settings-btn btn-glow" onclick="resetGame()">
+                            🆕 Новая игра
+                        </button>
+                        <button class="settings-btn btn-glow" onclick="exportData()">
+                            📤 Экспорт данных
+                        </button>
+                    </div>
+
+                    <!-- Блок для смены сервера -->
+                    <div class="settings-section">
+                        <h3>🌐 Настройки сервера</h3>
+                        <div class="setting-item">
+                            <span>Текущий сервер:</span>
+                            <span id="currentServer">40bee589cf87bb.lhr.life</span>
+                        </div>
+                        <div class="server-input">
+                            <input type="text" id="serverUrlInput" placeholder="Новый URL сервера">
+                            <button class="settings-btn btn-glow" onclick="updateServer()">
+                                🔄 Обновить сервер
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Нижняя навигационная панель -->
+        <div class="bottom-nav">
+            <button class="nav-btn" data-screen="settingsScreen" onclick="switchScreen('settingsScreen')">
+                <span class="nav-icon">⚙️</span>
+                <span class="nav-label">Настройки</span>
+                <div class="nav-glow"></div>
+            </button>
+            <button class="nav-btn active" data-screen="gameScreen" onclick="switchScreen('gameScreen')">
+                <span class="nav-icon">🎮</span>
+                <span class="nav-label">Играть</span>
+                <div class="nav-glow"></div>
+            </button>
+            <button class="nav-btn" data-screen="profileScreen" onclick="switchScreen('profileScreen')">
+                <span class="nav-icon">👤</span>
+                <span class="nav-label">Профиль</span>
+                <div class="nav-glow"></div>
+            </button>
+        </div>
+
+        <!-- Анимация результатов -->
+        <div class="results-animation" id="resultsAnimation">
+            <div class="animation-content" id="animationContent"></div>
+        </div>
+
+        <!-- Уведомление о подключении -->
+        <div class="connection-status" id="connectionStatus">
+            <div class="connection-indicator connected"></div>
+            <span>Подключено к серверу</span>
+        </div>
+    </div>
+
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Функция для обновления сервера через интерфейс
+        function updateServer() {
+            const newUrl = document.getElementById('serverUrlInput').value;
+            if (newUrl) {
+                changeServerUrl(newUrl);
+                document.getElementById('currentServer').textContent = newUrl;
+                document.getElementById('serverUrlInput').value = '';
+                alert('URL сервера обновлен!');
+            } else {
+                alert('Введите новый URL сервера');
+            }
+        }
+    </script>
+</body>
+</html>
