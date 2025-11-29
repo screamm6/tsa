@@ -33,7 +33,7 @@ class OnlineMinesGame {
         };
 
         this.SERVER_URLS = [
-            'https://5d9e3f76d2c139.lhr.life', // ЗДЕСЬ МЕНЯЙ ССЫЛКУ НА НОВУЮ
+            'https://c6de96722c7cfd.lhr.life', // ЗДЕСЬ МЕНЯЙ ССЫЛКУ НА НОВУЮ
             'http://localhost:3000',
             'http://127.0.0.1:3000'
         ];
