@@ -33,8 +33,9 @@ class OnlineMinesGame {
         };
 
         this.SERVER_URLS = [
-            'https://6af5be2fb9e95a.lhr.life', // ← НОВАЯ ССЫЛКА
+            'https://6af5be2fb9e95a.lhr.life' // ← ЗДЕСЬ МЕНЯЙ ССЫЛКУ
         ];
+
         this.init();
     }
 
@@ -770,9 +771,9 @@ class OnlineMinesGame {
         }, { passive: false });
     }
 
-    // Метод для обновления URL сервера (ВОТ ЗДЕСЬ МЕНЯЙ ССЫЛКУ!)
+    // Метод для обновления URL сервера
     updateServerUrl(newUrl) {
-        this.SERVER_URLS = [newUrl, ...this.SERVER_URLS.slice(1)];
+        this.SERVER_URLS = [newUrl];
         console.log('🔄 Обновлен URL сервера:', newUrl);
         
         if (this.socket) {
@@ -859,7 +860,7 @@ function exportData() {
     game.showNotification('Данные экспортированы в файл!', 'success');
 }
 
-// Функция для смены сервера (ВЫЗЫВАЙ ЭТУ ФУНКЦИЮ КОГДА ПОЛУЧАЕШЬ НОВУЮ ССЫЛКУ)
+// Функция для смены сервера
 function changeServerUrl(newUrl) {
     if (game) {
         game.updateServerUrl(newUrl);
@@ -876,5 +877,5 @@ document.addEventListener('DOMContentLoaded', function() {
     window.resetStats = resetStats;
     window.resetGame = resetGame;
     window.exportData = exportData;
-    window.changeServerUrl = changeServerUrl; // Добавляем функцию в глобальную область
+    window.changeServerUrl = changeServerUrl;
 });
