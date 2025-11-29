@@ -32,10 +32,9 @@ class OnlineMinesGame {
             offline: null
         };
 
-this.SERVER_URLS = [
-    'https://6af5be2fb9e95a.lhr.life' // ← ТОЛЬКО ЭТА ССЫЛКА
-];
-
+        this.SERVER_URLS = [
+            'https://6af5be2fb9e95a.lhr.life', // ← НОВАЯ ССЫЛКА
+        ];
         this.init();
     }
 
@@ -879,6 +878,3 @@ document.addEventListener('DOMContentLoaded', function() {
     window.exportData = exportData;
     window.changeServerUrl = changeServerUrl; // Добавляем функцию в глобальную область
 });
-
-
-
